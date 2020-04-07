@@ -22,6 +22,8 @@ class ExcerptSchedule(
     val items : List<ExcerptScheduleItem>
 ){
     fun getCurrentDayItem() = items.find { it.date == LocalDate.now() }
+    fun getItemByDate(date: LocalDate) = items.find { it.date == date }
 }
+
 
 //items.find { it.date == LocalDate.now() }

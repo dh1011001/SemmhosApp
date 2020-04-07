@@ -1,10 +1,10 @@
 package com.example.semmhosapp.ui.bible_excerpt
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.DatePicker
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.semmhosapp.R
@@ -12,11 +12,15 @@ import com.example.semmhosapp.model.BibleExcerptAddress
 import com.example.semmhosapp.model.ExcerptSchedule
 import com.example.semmhosapp.model.ExcerptScheduleItem
 import kotlinx.android.synthetic.main.fragment_bible_excerpt.*
+import kotlinx.android.synthetic.main.fragment_bible_excerpt.view.*
 import org.xmlpull.v1.XmlPullParser
 import java.time.LocalDate
 
-class BibleExerptFragment : Fragment() {
+class BibleExerptFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
+    lateinit var root : View
+
+    var selectedDate = LocalDate.now()
 
     val schedule = getDefaultSchedule()
 
@@ -26,13 +30,47 @@ class BibleExerptFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
 
-        val root = inflater.inflate(R.layout.fragment_bible_excerpt, container, false)
+        root = inflater.inflate(R.layout.fragment_bible_excerpt, container, false)
+        setHasOptionsMenu(true)
         setCurrentExcerpt()
         return root
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.prevDateItem -> {
+                selectedDate = selectedDate.minusDays(1)
+                setCurrentExcerpt()
+            }
+            R.id.todayItem -> {
+                selectedDate = LocalDate.now()
+                setCurrentExcerpt()
+            }
+            R.id.nextDayItem -> {
+                selectedDate = selectedDate.plusDays(1)
+                setCurrentExcerpt()
+            }
+            R.id.pickDaytItem -> {
+                DatePickerDialog(
+                    requireContext(),
+                    this,
+                    selectedDate.year,
+                    selectedDate.monthValue,
+                    selectedDate.dayOfMonth
+
+                ).show()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.select_date, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
     private fun setCurrentExcerpt() {
-        val freeRedingAdress = schedule.getCurrentDayItem()?.freeReadingExcerptAddress
+        val freeRedingAdress = schedule.getItemByDate(selectedDate)?.freeReadingExcerptAddress
         if (freeRedingAdress != null){
             val freeRedingList = getBibleExcerpt(freeRedingAdress)
             if(freeRedingList != null){
@@ -40,7 +78,7 @@ class BibleExerptFragment : Fragment() {
                 for(text in freeRedingList){
                     bofResultStr += text + "\n"
                 }
-                freeReadingTextView.setText(bofResultStr)
+                root.freeReadingTextView.setText(bofResultStr)
             }
         }
     }
@@ -110,5 +148,10 @@ class BibleExerptFragment : Fragment() {
                 Toast.LENGTH_LONG).show()
         }
         return null
+    }
+
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        selectedDate = LocalDate.of(year, month, dayOfMonth)
+        setCurrentExcerpt()
     }
 }
