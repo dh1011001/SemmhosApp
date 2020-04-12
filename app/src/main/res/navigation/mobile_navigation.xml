@@ -30,14 +30,14 @@
     </fragment>
 
     <fragment
-        android:id="@+id/nav_gallery"
+        android:id="@+id/nav_Bible_Exerpt"
         android:name="com.example.semmhosapp.ui.bible_excerpt.BibleExerptFragment"
-        android:label="@string/menu_gallery"
+        android:label="@string/menu_bible"
         tools:layout="@layout/fragment_bible_excerpt" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
+        android:id="@+id/nav_timetable"
         android:name="com.example.semmhosapp.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
+        android:label="@string/menu_timetable"
         tools:layout="@layout/fragment_slideshow" />
 </navigation>
