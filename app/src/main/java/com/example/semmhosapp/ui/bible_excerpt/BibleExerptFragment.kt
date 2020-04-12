@@ -2,22 +2,29 @@ package com.example.semmhosapp.ui.bible_excerpt
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.view.*
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.semmhosapp.R
 import com.example.semmhosapp.model.BibleExcerptAddress
 import com.example.semmhosapp.model.ExcerptSchedule
 import com.example.semmhosapp.model.ExcerptScheduleItem
-import kotlinx.android.synthetic.main.fragment_bible_excerpt.*
 import kotlinx.android.synthetic.main.fragment_bible_excerpt.view.*
+import kotlinx.android.synthetic.main.fragment_bible_excerpt_text.view.*
 import org.xmlpull.v1.XmlPullParser
+import java.lang.IllegalArgumentException
 import java.time.LocalDate
 
 class BibleExerptFragment : Fragment(), DatePickerDialog.OnDateSetListener {
+
+    var freeReadingText = MutableLiveData<String>()
+    var groupReadingText = MutableLiveData<String>()
 
     lateinit var root : View
 
@@ -34,6 +41,8 @@ class BibleExerptFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         root = inflater.inflate(R.layout.fragment_bible_excerpt, container, false)
         setHasOptionsMenu(true)
         setCurrentExcerpt()
+        root.viewPager.adapter = ExcerptPagerAdapter(childFragmentManager)
+        root.tabLayout.setupWithViewPager(root.viewPager)
         return root
     }
 
@@ -80,11 +89,27 @@ class BibleExerptFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                     bofResultStr += text + "\n"
                 }
                 root.dateTextView.setText("Текст на " + selectedDate.toString())
-                root.freeReadingTextView.setText(bofResultStr)
+                freeReadingText.value = bofResultStr
 
             }
         } else {
-            root.freeReadingTextView.setText("Нет отрывка на данный день")
+            freeReadingText.value = "Нет отрывка на данный день"
+        }
+
+        val groupRedingAdress = schedule.getItemByDate(selectedDate)?.groupReadingExcerptAddress
+        if (groupRedingAdress != null){
+            val groupRedingList = getBibleExcerpt(groupRedingAdress)
+            if(groupRedingList != null){
+                var bofResultStr = ""
+                for(text in groupRedingList){
+                    bofResultStr += text + "\n"
+                }
+                root.dateTextView.setText("Текст на " + selectedDate.toString())
+                groupReadingText.value = bofResultStr
+
+            }
+        } else {
+            groupReadingText.value = "Нет отрывка на данный день"
         }
     }
 
@@ -133,8 +158,9 @@ class BibleExerptFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                     if (fz && fb && fc && fv) {
                         if (parser.name == "verse") {
                             if (parser.getAttributeValue(0).toInt() <= address.endVerse) {
+                                tmp = "${parser.getAttributeValue(0)} "
                                 parser.next()
-                                tmp = parser.text
+                                tmp += parser.text
 
 
                                 list.add(tmp)
@@ -158,5 +184,42 @@ class BibleExerptFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
         selectedDate = LocalDate.of(year, month, dayOfMonth)
         setCurrentExcerpt()
+    }
+
+    class ExcerptTextFragment(val text : LiveData<String>) : Fragment(){
+        lateinit var root : View
+        override fun onCreateView(
+            inflater: LayoutInflater,
+            container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View? {
+            root = inflater.inflate(R.layout.fragment_bible_excerpt_text, container, false)
+
+            text.observeForever{
+                root.excerptTextView.text = it
+            }
+
+            return root
+        }
+    }
+
+    inner class ExcerptPagerAdapter(fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+        override fun getItem(position: Int): Fragment {
+            return when (position) {
+                0 -> ExcerptTextFragment(freeReadingText)
+                1 -> ExcerptTextFragment(groupReadingText)
+                else -> throw IllegalArgumentException("Wrong position")
+            }
+        }
+
+        override fun getPageTitle(position: Int): CharSequence? {
+            return when (position) {
+                0 -> "Свободное чтение"
+                1 -> "Групповое чтение"
+                else -> throw IllegalArgumentException("Wrong position")
+            }
+        }
+        override fun getCount() = 2
+
     }
 }

@@ -33,7 +33,7 @@
         android:id="@+id/nav_Bible_Exerpt"
         android:name="com.example.semmhosapp.ui.bible_excerpt.BibleExerptFragment"
         android:label="@string/menu_bible"
-        tools:layout="@layout/fragment_bible_excerpt" />
+        tools:layout="@layout/fragment_bible_excerpt_text" />
 
     <fragment
         android:id="@+id/nav_timetable"
