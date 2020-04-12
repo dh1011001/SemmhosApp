@@ -2,6 +2,7 @@ package com.example.semmhosapp.ui.bible_excerpt
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.util.Log
 import android.view.*
 import android.widget.DatePicker
@@ -78,15 +79,19 @@ class BibleExerptFragment : Fragment(), DatePickerDialog.OnDateSetListener {
                 for(text in freeRedingList){
                     bofResultStr += text + "\n"
                 }
+                root.dateTextView.setText("Текст на " + selectedDate.toString())
                 root.freeReadingTextView.setText(bofResultStr)
+
             }
+        } else {
+            root.freeReadingTextView.setText("Нет отрывка на данный день")
         }
     }
 
     fun getDefaultSchedule () : ExcerptSchedule {
         val item1 = ExcerptScheduleItem(
             LocalDate.now(),
-            BibleExcerptAddress("Old", 1,1, 1,3),
+            BibleExcerptAddress("Old", 1,1, 1,30),
             BibleExcerptAddress("Old", 1,1, 10,20)
         )
         val item2 = ExcerptScheduleItem(
