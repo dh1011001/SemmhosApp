@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "210967099489",
+    "firebase_url": "https://semhozapp.firebaseio.com",
+    "project_id": "semhozapp",
+    "storage_bucket": "semhozapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:210967099489:android:bbeb02d04b5767883d5220",
+        "android_client_info": {
+          "package_name": "com.example.semmhosapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "210967099489-7sj9mgj7p4ev13a77npnkoucvhqvtu4k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.semmhosapp",
+            "certificate_hash": "b62b686714ec2202465fc645cdd05bb9b551cc80"
+          }
+        },
+        {
+          "client_id": "210967099489-0qt48idnsbleoc3tc84t1b4sg7tlubld.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZHszkOrETtahcVe23z5t6bArnRR5Oatw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "210967099489-0qt48idnsbleoc3tc84t1b4sg7tlubld.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
