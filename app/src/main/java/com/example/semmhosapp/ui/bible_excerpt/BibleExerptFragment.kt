@@ -15,8 +15,6 @@ import com.example.semmhosapp.R
 import com.example.semmhosapp.model.BibleExcerptAddress
 import com.example.semmhosapp.model.ExcerptSchedule
 import com.example.semmhosapp.model.ExcerptScheduleItem
-import com.example.semmhosapp.utils.getDefaultSchedule
-import com.example.semmhosapp.utils.schedule
 import kotlinx.android.synthetic.main.fragment_bible_excerpt.view.*
 import kotlinx.android.synthetic.main.fragment_bible_excerpt_text.view.*
 import org.xmlpull.v1.XmlPullParser
@@ -32,6 +30,7 @@ class BibleExerptFragment : Fragment(), DatePickerDialog.OnDateSetListener {
 
     var selectedDate = LocalDate.now()
 
+    val schedule = getDefaultSchedule()
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -44,9 +43,6 @@ class BibleExerptFragment : Fragment(), DatePickerDialog.OnDateSetListener {
         setCurrentExcerpt()
         root.viewPager.adapter = ExcerptPagerAdapter(childFragmentManager)
         root.tabLayout.setupWithViewPager(root.viewPager)
-        schedule.observeForever{
-            setCurrentExcerpt()
-        }
         return root
     }
 
@@ -84,7 +80,7 @@ class BibleExerptFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     }
 
     private fun setCurrentExcerpt() {
-        val freeRedingAdress = schedule.value!!.getItemByDate(selectedDate)?.freeReadingExcerptAddress
+        val freeRedingAdress = schedule.getItemByDate(selectedDate)?.freeReadingExcerptAddress
         if (freeRedingAdress != null){
             val freeRedingList = getBibleExcerpt(freeRedingAdress)
             if(freeRedingList != null){
@@ -100,7 +96,7 @@ class BibleExerptFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             freeReadingText.value = "Нет отрывка на данный день"
         }
 
-        val groupRedingAdress = schedule.value!!.getItemByDate(selectedDate)?.groupReadingExcerptAddress
+        val groupRedingAdress = schedule.getItemByDate(selectedDate)?.groupReadingExcerptAddress
         if (groupRedingAdress != null){
             val groupRedingList = getBibleExcerpt(groupRedingAdress)
             if(groupRedingList != null){
@@ -114,11 +110,22 @@ class BibleExerptFragment : Fragment(), DatePickerDialog.OnDateSetListener {
             }
         } else {
             groupReadingText.value = "Нет отрывка на данный день"
-
         }
     }
 
-
+    fun getDefaultSchedule () : ExcerptSchedule {
+        val item1 = ExcerptScheduleItem(
+            LocalDate.now(),
+            BibleExcerptAddress("Old", 1,1, 1,30),
+            BibleExcerptAddress("Old", 1,1, 10,20)
+        )
+        val item2 = ExcerptScheduleItem(
+            LocalDate.now().plusDays(1),
+            BibleExcerptAddress("Old", 1,1, 4,9),
+            BibleExcerptAddress("Old", 1,1, 21,41)
+        )
+        return ExcerptSchedule(arrayListOf(item1, item2))
+    }
 
     fun getBibleExcerpt (address: BibleExcerptAddress) : List<String>?{
         val list = ArrayList<String>()
