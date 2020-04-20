@@ -32,15 +32,15 @@ class BibleExerptFragment : SelectDateFragment() {
 
         root = inflater.inflate(R.layout.fragment_bible_excerpt, container, false)
         setHasOptionsMenu(true)
-        FirestoreDB.createDBListener()
-        FirestoreDB.schedule.observeForever{onSelectDate()}
+        FirestoreDB.createDBExcerptListener()
+        FirestoreDB.excerptSchedule.observeForever{onSelectDate()}
         root.viewPager.adapter = ExcerptPagerAdapter(childFragmentManager)
         root.tabLayout.setupWithViewPager(root.viewPager)
         return root
     }
 
     override fun onSelectDate() {
-        val freeRedingAdress = FirestoreDB.schedule.value!!.getItemByDate(selectedDate)?.freeReadingExcerptAddress
+        val freeRedingAdress = FirestoreDB.excerptSchedule.value!!.getItemByDate(selectedDate)?.freeReadingExcerptAddress
         if (freeRedingAdress != null){
             val freeRedingList = BibleParser.getBibleExcerpt(requireContext(), freeRedingAdress)
             if(freeRedingList != null){
@@ -56,7 +56,7 @@ class BibleExerptFragment : SelectDateFragment() {
             freeReadingText.value = "Нет отрывка на данный день"
         }
 
-        val groupRedingAdress = FirestoreDB.schedule.value!!.getItemByDate(selectedDate)?.groupReadingExcerptAddress
+        val groupRedingAdress = FirestoreDB.excerptSchedule.value!!.getItemByDate(selectedDate)?.groupReadingExcerptAddress
         if (groupRedingAdress != null){
             val groupRedingList = BibleParser.getBibleExcerpt(requireContext(), groupRedingAdress)
             if(groupRedingList != null){

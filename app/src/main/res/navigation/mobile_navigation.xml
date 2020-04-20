@@ -37,7 +37,7 @@
 
     <fragment
         android:id="@+id/nav_timetable"
-        android:name="com.example.semmhosapp.ui.slideshow.CampTimetableFragment"
+        android:name="com.example.semmhosapp.ui.camp_timetable.CampTimetableFragment"
         android:label="@string/menu_timetable"
         tools:layout="@layout/fragment_camp_timetable" />
 </navigation>

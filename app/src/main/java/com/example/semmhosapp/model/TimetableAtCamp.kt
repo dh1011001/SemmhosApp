@@ -12,13 +12,17 @@ class Action(
 )
 
 class TimetableAtDay(
-    val day: MonthDay,
+    val day: LocalDate,
     val actions : List<Action>
 )
 
 class TimetableAtCamp(
     val daysOfCamp: List<TimetableAtDay>
-)
+) {
+    fun getTableAtDay(day : LocalDate) =
+         daysOfCamp.find { it.day == day }
+
+}
 
 
 

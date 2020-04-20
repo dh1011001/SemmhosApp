@@ -4,13 +4,15 @@ import androidx.lifecycle.MutableLiveData
 import com.example.semmhosapp.model.BibleExcerptAddress
 import com.example.semmhosapp.model.ExcerptSchedule
 import com.example.semmhosapp.model.ExcerptScheduleItem
+import com.example.semmhosapp.model.TimetableAtCamp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.getField
 import com.google.firebase.ktx.Firebase
 import java.time.LocalDate
 
 object FirestoreDB {
-    val schedule =  MutableLiveData<ExcerptSchedule>()
+    val excerptSchedule =  MutableLiveData<ExcerptSchedule>()
+    val timetableAtCamp =  MutableLiveData<TimetableAtCamp>()
     val db = Firebase.firestore
     fun insertScheduleInDB(schedule: ExcerptSchedule){
         for (item in schedule.items){
@@ -24,7 +26,7 @@ object FirestoreDB {
         }
     }
 
-    fun createDBListener() {
+    fun createDBExcerptListener() {
         val db = Firebase.firestore
         db.collection("Excerpts").addSnapshotListener { querySnapshot, firebaseFirestoreException ->
             if(querySnapshot != null){
@@ -37,9 +39,13 @@ object FirestoreDB {
                         val excerptScheduleItem = ExcerptScheduleItem(LocalDate.parse(date), freeReading, groupReading)
                         list.add(excerptScheduleItem)
                     }
-                    schedule.value = ExcerptSchedule(list)
+                    excerptSchedule.value = ExcerptSchedule(list)
                 }
             }
         }
     }
+    
+    fun insertTimetableAtDb(timetableAtCamp: TimetableAtCamp){}
+    fun createDBTimetableListener(){}
+
 }

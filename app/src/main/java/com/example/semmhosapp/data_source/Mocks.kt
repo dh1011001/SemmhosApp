@@ -1,9 +1,8 @@
 package com.example.semmhosapp.data_source
 
-import com.example.semmhosapp.model.BibleExcerptAddress
-import com.example.semmhosapp.model.ExcerptSchedule
-import com.example.semmhosapp.model.ExcerptScheduleItem
+import com.example.semmhosapp.model.*
 import java.time.LocalDate
+import java.time.LocalTime
 
 fun getDefaultSchedule () : ExcerptSchedule {
     val item1 = ExcerptScheduleItem(
@@ -17,4 +16,15 @@ fun getDefaultSchedule () : ExcerptSchedule {
         BibleExcerptAddress("Old", 1,1, 21,41)
     )
     return ExcerptSchedule(arrayListOf(item1, item2))
+}
+
+fun getMockDaysSchedule(): TimetableAtCamp {
+    val todaySchedule = TimetableAtDay(
+        LocalDate.now(),
+        arrayListOf(
+            Action(LocalTime.of(11,30), "Подъем"),
+            Action(LocalTime.of(23,30), "Отбой")
+        )
+    )
+    return TimetableAtCamp(arrayListOf(todaySchedule))
 }

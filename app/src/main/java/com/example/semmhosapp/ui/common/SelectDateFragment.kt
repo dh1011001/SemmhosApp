@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import com.example.semmhosapp.R
 import java.time.LocalDate
 
-abstract class SelectDateFragment : Fragment(), DatePickerDialog.OnDateSetListener {
+abstract  class SelectDateFragment: Fragment(), DatePickerDialog.OnDateSetListener {
     lateinit var root : View
     var selectedDate = LocalDate.now()
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
