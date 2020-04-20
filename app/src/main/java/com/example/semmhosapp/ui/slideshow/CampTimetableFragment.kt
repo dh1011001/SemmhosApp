@@ -6,26 +6,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.example.semmhosapp.R
+import com.example.semmhosapp.ui.common.SelectDateFragment
 
-class SlideshowFragment : Fragment() {
-
-    private lateinit var slideshowViewModel: SlideshowViewModel
+class CampTimetableFragment : SelectDateFragment() {
+    override fun onSelectDate() {
+        TODO("Not yet implemented")
+    }
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        slideshowViewModel =
-                ViewModelProviders.of(this).get(SlideshowViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_slideshow, container, false)
+
+        val root = inflater.inflate(R.layout.fragment_camp_timetable, container, false)
+        setHasOptionsMenu(true)
         val textView: TextView = root.findViewById(R.id.text_slideshow)
-        slideshowViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
         return root
     }
 }

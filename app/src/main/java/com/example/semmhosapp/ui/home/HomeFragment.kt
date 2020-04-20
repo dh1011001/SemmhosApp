@@ -9,18 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.semmhosapp.R
-import com.example.semmhosapp.utils.getDefaultSchedule
+import com.example.semmhosapp.data_source.FirestoreDB
+import com.example.semmhosapp.data_source.getDefaultSchedule
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
 class HomeFragment : Fragment() {
-
-    val shedul = getDefaultSchedule()
-    val db = Firebase.firestore
-
-
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
@@ -29,15 +25,7 @@ class HomeFragment : Fragment() {
 
         val root = inflater.inflate(R.layout.fragment_home, container, false)
         root.button.setOnClickListener {
-            for (item in shedul.items){
-                val data = hashMapOf("date" to item.date.toString(),
-                    "freeReading" to item.freeReadingExcerptAddress,
-                    "groupReading" to item.groupReadingExcerptAddress)
-                db.collection("Excerpts").document(item.date.toString())
-                    .set(data)
-                    .addOnSuccessListener {  }
-                    .addOnFailureListener{  }
-            }
+            FirestoreDB.insertScheduleInDB(getDefaultSchedule())
         }
         return root
     }

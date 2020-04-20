@@ -1,16 +1,13 @@
 package com.example.semmhosapp.model
 
 import java.time.LocalDate
-import java.time.LocalTime
-import java.time.MonthDay
-import java.time.OffsetTime
 
 class BibleExcerptAddress(
-    val testament : String,
-    val book : Int,
-    val chapter : Int,
-    val startVerse : Int,
-    val endVerse : Int
+    val testament : String = "",
+    val book : Int = 0,
+    val chapter : Int = 0,
+    val startVerse : Int = 0,
+    val endVerse : Int = 0
 
 )
 
@@ -27,33 +24,3 @@ class ExcerptSchedule(
     fun getCurrentDayItem() = items.find { it.date == LocalDate.now() }
     fun getItemByDate(date: LocalDate) = items.find { it.date == date }
 }
-
-
-class Action(
-    val time: LocalTime,
-    val action : String
-)
-
-class TimetableAtDay(
-    val day: MonthDay,
-    val actions : List<Action>
-)
-
-class TimetableAtCamp(
-    val daysOfCamp: List<TimetableAtDay>
-)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
