@@ -8,13 +8,17 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.semmhosapp.R
+import com.example.semmhosapp.data_source.FirestoreDB
 import com.example.semmhosapp.data_source.getMockDaysSchedule
 import com.example.semmhosapp.ui.common.SelectDateFragment
 import kotlinx.android.synthetic.main.fragment_camp_timetable.view.*
 
 class CampTimetableFragment : SelectDateFragment() {
     override fun onSelectDate() {
-        TODO("Not yet implemented")
+        val timeTableAtDate = FirestoreDB.timetableAtCamp.value?.getTableAtDay(selectedDate)
+        timeTableAtDate?.let {
+            root.recytlerView.adapter = TimetableAdapter(it)
+        }
     }
 
     override fun onCreateView(
@@ -26,9 +30,17 @@ class CampTimetableFragment : SelectDateFragment() {
         val root = inflater.inflate(R.layout.fragment_camp_timetable, container, false)
         setHasOptionsMenu(true)
         val textView: TextView = root.findViewById(R.id.text_slideshow)
+        FirestoreDB.createDBTimetableListener()
         root.recytlerView.layoutManager = LinearLayoutManager(requireContext())
+        FirestoreDB.timetableAtCamp.observeForever {
+            val timeTableAtDate = it.getTableAtDay(selectedDate)
+            timeTableAtDate?.let {
+                root.recytlerView.adapter = TimetableAdapter(it)
+            }
+
+        }
         getMockDaysSchedule().getTableAtDay(selectedDate)?.let{
-            root.recytlerView.adapter = TimetableAdapter(it)
+
         }
         return root
     }

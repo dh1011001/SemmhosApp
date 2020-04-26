@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.semmhosapp.R
 import com.example.semmhosapp.model.Action
-import com.example.semmhosapp.model.TimetableAtCamp
 import com.example.semmhosapp.model.TimetableAtDay
 import kotlinx.android.synthetic.main.timetable_list_item.view.*
 
@@ -16,7 +15,7 @@ class TimetableAdapter(val timetableAtDay: TimetableAtDay) : RecyclerView.Adapte
         fun bind(action : Action) {
             this.action = action
             itemView.timeTextView.text = action.time.toString()
-            itemView.actionTextView.text = action.action.toString()
+            itemView.actionTextView.text = action.name.toString()
         }
     }
 

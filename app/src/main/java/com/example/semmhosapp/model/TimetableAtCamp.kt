@@ -7,8 +7,9 @@ import java.time.OffsetTime
 
 
 class Action(
-    val time: LocalTime,
-    val action : String
+    val id: Int = 0,
+    val time: LocalTime = LocalTime.now(),
+    val name : String = ""
 )
 
 class TimetableAtDay(

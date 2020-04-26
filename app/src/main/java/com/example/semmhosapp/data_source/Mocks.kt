@@ -22,8 +22,8 @@ fun getMockDaysSchedule(): TimetableAtCamp {
     val todaySchedule = TimetableAtDay(
         LocalDate.now(),
         arrayListOf(
-            Action(LocalTime.of(11,30), "Подъем"),
-            Action(LocalTime.of(23,30), "Отбой")
+            Action(3, LocalTime.of(11,30), "Подъем"),
+            Action(4, LocalTime.of(23,30), "Отбой")
         )
     )
     return TimetableAtCamp(arrayListOf(todaySchedule))

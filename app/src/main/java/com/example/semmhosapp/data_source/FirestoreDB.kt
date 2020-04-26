@@ -1,16 +1,30 @@
 package com.example.semmhosapp.data_source
 
 import androidx.lifecycle.MutableLiveData
-import com.example.semmhosapp.model.BibleExcerptAddress
-import com.example.semmhosapp.model.ExcerptSchedule
-import com.example.semmhosapp.model.ExcerptScheduleItem
-import com.example.semmhosapp.model.TimetableAtCamp
+import com.example.semmhosapp.model.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.getField
 import com.google.firebase.ktx.Firebase
 import java.time.LocalDate
+import java.time.LocalTime
 
 object FirestoreDB {
+
+/*    class Action(
+        val id: Int,
+        val time: LocalTime,
+        val action : String
+    )*/
+
+
+    class ActionWrapper(action: Action = Action()){
+        val id: Int = action.id
+        val name: String = action.name
+        val time: String = action.time.toString()
+    }
+
+    class ActionWrapperList(val actions: List<ActionWrapper> = emptyList())
+
     val excerptSchedule =  MutableLiveData<ExcerptSchedule>()
     val timetableAtCamp =  MutableLiveData<TimetableAtCamp>()
     val db = Firebase.firestore
@@ -45,7 +59,31 @@ object FirestoreDB {
         }
     }
     
-    fun insertTimetableAtDb(timetableAtCamp: TimetableAtCamp){}
-    fun createDBTimetableListener(){}
+    fun insertTimetableAtDb(timetableAtCamp: TimetableAtCamp){
+        for (item in timetableAtCamp.daysOfCamp){
+            val actions = item.actions.map { ActionWrapper(it) }
+            val actionWrapperList = ActionWrapperList(actions)
+            db.collection("CampTimetable").document(item.day.toString())
+                .set(actionWrapperList)
+        }
+    }
+    fun createDBTimetableListener(){
+        db.collection("CampTimetable")
+            .addSnapshotListener{timetableAtDays, firebaseFirestoreException ->
+                timetableAtDays?.let{
+                    val result = arrayListOf<TimetableAtDay>()
+                    for(timetableAtDay in timetableAtDays){
+                        val actionWrapperList = timetableAtDay.toObject(ActionWrapperList::class.java)
+                        val actions = actionWrapperList.actions.map { Action(
+                            it.id,
+                            LocalTime.parse(it.time),
+                            it.name
+                        ) }
+                        result.add(TimetableAtDay(LocalDate.parse(timetableAtDay.id), actions))
+                    }
+                    timetableAtCamp.value = TimetableAtCamp(result)
+                }
+            }
+    }
 
 }
