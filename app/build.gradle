@@ -58,5 +58,9 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
     implementation 'com.google.firebase:firebase-firestore-ktx:21.4.2'
     implementation 'com.google.guava:guava:27.0.1-android'
+    def work_version = "2.3.4"
+
+    // Kotlin + coroutines
+    implementation "androidx.work:work-runtime-ktx:$work_version"
 
 }
