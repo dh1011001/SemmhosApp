@@ -15,9 +15,11 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.example.semmhosapp.utils.NotificationHelper
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
+import kotlinx.serialization.PrimitiveKind
 
 class MainActivity : AppCompatActivity() {
 
@@ -47,6 +49,8 @@ class MainActivity : AppCompatActivity() {
         if(FirebaseAuth.getInstance().currentUser == null){
             connectToFirebase()
         }
+        NotificationHelper.init(this)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

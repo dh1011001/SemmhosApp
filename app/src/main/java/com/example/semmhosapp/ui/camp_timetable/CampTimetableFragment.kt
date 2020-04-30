@@ -11,6 +11,7 @@ import com.example.semmhosapp.R
 import com.example.semmhosapp.data_source.FirestoreDB
 import com.example.semmhosapp.data_source.getMockDaysSchedule
 import com.example.semmhosapp.ui.common.SelectDateFragment
+import com.example.semmhosapp.utils.NotificationHelper
 import kotlinx.android.synthetic.main.fragment_camp_timetable.view.*
 
 class CampTimetableFragment : SelectDateFragment() {
@@ -27,7 +28,7 @@ class CampTimetableFragment : SelectDateFragment() {
             savedInstanceState: Bundle?
     ): View? {
 
-        val root = inflater.inflate(R.layout.fragment_camp_timetable, container, false)
+        root = inflater.inflate(R.layout.fragment_camp_timetable, container, false)
         setHasOptionsMenu(true)
         val textView: TextView = root.findViewById(R.id.text_slideshow)
         FirestoreDB.createDBTimetableListener()
@@ -37,7 +38,7 @@ class CampTimetableFragment : SelectDateFragment() {
             timeTableAtDate?.let {
                 root.recytlerView.adapter = TimetableAdapter(it)
             }
-
+            NotificationHelper.setNotifications(it)
         }
         getMockDaysSchedule().getTableAtDay(selectedDate)?.let{
 
