@@ -53,6 +53,7 @@ object NotificationHelper {
             .setContentTitle(NOTIFICATION_TITLE)
             .setContentText(actionName)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setSmallIcon(R.drawable.notification_icon_background)
             .build()
         NotificationManagerCompat.from(context).notify(actionId, notification)
     }
@@ -62,7 +63,10 @@ object NotificationHelper {
         val idList = mutableListOf<String>()
         for (day in timetableAtCamp.daysOfCamp)
             for(action in day.actions){
-                idList.add(setDelayNotification(action.time, day.day, action))
+                val id =setDelayNotification(action.time, day.day, action)
+                id?.let {
+                    idList.add(it)
+                }
             }
         saveIdList(idList)
     }
@@ -89,18 +93,23 @@ object NotificationHelper {
             emptyList()
     }
 
-    fun setDelayNotification(time: LocalTime, date: LocalDate, action: Action): String{
-        val workRequest = OneTimeWorkRequest.Builder(NotificationJob::class.java)
-            .setInputData(
-                workDataOf(
-                    "id" to action.id,
-                    "name" to action.name
+    fun setDelayNotification(time: LocalTime, date: LocalDate, action: Action): String?{
+        val now = LocalDateTime.now()
+        val actionTime = LocalDateTime.of(date, time)
+        if (actionTime.isAfter(now)) {
+            val workRequest = OneTimeWorkRequest.Builder(NotificationJob::class.java)
+                .setInputData(
+                    workDataOf(
+                        "id" to action.id,
+                        "actionName" to action.name
+                    )
                 )
-            )
-            .setInitialDelay(getDelay(date, time), TimeUnit.SECONDS)
-            .build()
-        WorkManager.getInstance(context).enqueue(workRequest)
-        return workRequest.id.toString()
+                .setInitialDelay(getDelay(date, time), TimeUnit.SECONDS)
+                .build()
+            WorkManager.getInstance(context).enqueue(workRequest)
+            return workRequest.id.toString()
+        }
+            return null
     }
 
     private fun getDelay(date: LocalDate, time: LocalTime): Long {

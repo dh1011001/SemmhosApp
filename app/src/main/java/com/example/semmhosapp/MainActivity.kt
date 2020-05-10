@@ -24,6 +24,7 @@ import kotlinx.serialization.PrimitiveKind
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+    lateinit var navView: NavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,19 +38,25 @@ class MainActivity : AppCompatActivity() {
                     .setAction("Action", null).show()
         }
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
-        val navView: NavigationView = findViewById(R.id.nav_view)
+        navView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.nav_home, R.id.nav_Bible_Exerpt, R.id.nav_timetable), drawerLayout)
+                R.id.nav_home, R.id.nav_Bible_Exerpt, R.id.nav_timetable, R.id.nav_admin), drawerLayout)
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        if(FirebaseAuth.getInstance().currentUser == null){
+
+        val user = FirebaseAuth.getInstance().currentUser
+
+        if(user == null){
             connectToFirebase()
-        }
-        NotificationHelper.init(this)
+        } else
+            navView.menu.findItem(R.id.nav_admin).isVisible = user.email == "panevrn@gmail.com"||user.email == "dh1011001@gmail.com"
+
+
+        NotificationHelper.init(applicationContext)
 
     }
 
@@ -84,6 +91,11 @@ class MainActivity : AppCompatActivity() {
 
         if (requestCode == RC_SIGN_IN) {
             val response = IdpResponse.fromResultIntent(data)
+            val user = FirebaseAuth.getInstance().currentUser
+            user?.let {
+                navView.menu.findItem(R.id.nav_admin).isVisible = user.email == "panevrn@gmail.com"||user.email == "dh1011001@gmail.com"
+            }
+
 
             if (resultCode == Activity.RESULT_OK) {
                 // Successfully signed in

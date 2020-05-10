@@ -10,6 +10,10 @@
     <string name="menu_home">Домик</string>
     <string name="menu_bible">Библия</string>
     <string name="menu_timetable">Расписанице</string>
+    <string name="menu_admin">Администрирование</string>
 
     <string name="home_second">Home Second</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

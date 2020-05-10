@@ -8,6 +8,10 @@ import com.example.semmhosapp.model.BibleExcerptAddress
 import org.xmlpull.v1.XmlPullParser
 
 object BibleParser {
+    val books = hashMapOf(
+        "Ин" to 1,
+        "Исх" to 34
+    )
     fun getBibleExcerpt (context: Context, address: BibleExcerptAddress) : List<String>?{
         val list = ArrayList<String>()
 
