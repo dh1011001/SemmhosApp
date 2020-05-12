@@ -24,6 +24,7 @@ object BibleParser {
         BibleItem("Новый завет",  "New", newTestamentBooks)
     )
 
+
     fun getBibleExcerpt (context: Context, address: BibleExcerptAddress) : List<String>?{
         val list = ArrayList<String>()
 
