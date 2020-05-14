@@ -18,10 +18,8 @@ import java.lang.IllegalArgumentException
  * A simple [Fragment] subclass.
  * 66
  */
-class AdminFragment : SelectDateFragment() {
-    override fun onSelectDate() {
-        TODO("Not yet implemented")
-    }
+class AdminFragment  : Fragment() {
+    lateinit var root : View
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

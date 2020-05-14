@@ -33,11 +33,7 @@ class MainActivity : AppCompatActivity() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val fab: FloatingActionButton = findViewById(R.id.fab)
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
+
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
         navView = findViewById(R.id.nav_view)
         val navController = findNavController(R.id.nav_host_fragment)
@@ -54,11 +50,12 @@ class MainActivity : AppCompatActivity() {
         if(user == null){
             connectToFirebase()
         } else
-            navView.menu.findItem(R.id.nav_admin).isVisible = user.email == "panevrn@gmail.com"||user.email == "dh1011001@gmail.com"
+            navView.menu.findItem(R.id.nav_admin).isVisible = user.email == "panevrn@gmail.com"||user.email == "dh1011001@gmail.com"||user.email == "allex.potter.d@gmail.com"
 
 
         NotificationHelper.init(applicationContext)
         FirestoreDB.createDBTimetableListener()
+        FirestoreDB.createDBExcerptListener()
 
     }
 

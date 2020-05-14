@@ -32,7 +32,6 @@ class BibleExerptFragment : SelectDateFragment() {
 
         root = inflater.inflate(R.layout.fragment_bible_excerpt, container, false)
         setHasOptionsMenu(true)
-        FirestoreDB.createDBExcerptListener()
         FirestoreDB.excerptSchedule.observeForever{onSelectDate()}
         root.viewPager.adapter = ExcerptPagerAdapter(childFragmentManager)
         root.tabLayout.setupWithViewPager(root.viewPager)

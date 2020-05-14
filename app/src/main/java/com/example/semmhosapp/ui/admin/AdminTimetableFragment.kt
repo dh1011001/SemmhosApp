@@ -6,32 +6,47 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.semmhosapp.R
 import com.example.semmhosapp.data_source.FirestoreDB
 import com.example.semmhosapp.model.Action
 import com.example.semmhosapp.model.TimetableAtDay
 import com.example.semmhosapp.ui.camp_timetable.TimetableAdapter
+import com.example.semmhosapp.ui.common.SelectDateFragment
 import kotlinx.android.synthetic.main.fragment_admin_timetable.view.*
 import kotlinx.android.synthetic.main.fragment_bible_excerpt_text.view.*
 import kotlinx.android.synthetic.main.fragment_camp_timetable.view.*
 import java.time.LocalDate
 import java.time.LocalTime
 
-class AdminTimetableFragment : Fragment(), TimetableAdapter.Listener{
-    lateinit var root : View
-    lateinit var timetableAtDay: TimetableAtDay
+class   AdminTimetableFragment : SelectDateFragment(), TimetableAdapter.Listener{
+
+    override fun onSelectDate() {
+        actions = FirestoreDB.timetableAtCamp.value?.getTableAtDay(selectedDate)?.actions?.toMutableList() ?: mutableListOf()
+        updateReсyclerView()
+
+    }
+
+    lateinit var actions: MutableList<Action>
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         root = inflater.inflate(R.layout.fragment_admin_timetable, container, false)
-
-        timetableAtDay = TimetableAtDay(LocalDate.now(), mutableListOf(Action(0, LocalTime.of(5,4), "sdfdsfds")))
+        setHasOptionsMenu(true)
+        FirestoreDB.timetableAtCamp.observe(viewLifecycleOwner, Observer {
+            actions = it.getTableAtDay(selectedDate)?.actions?.toMutableList() ?: mutableListOf()
+            updateReсyclerView()
+        })
         root.timetableRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        root.timetableRecyclerView.adapter= TimetableAdapter(timetableAtDay, this)
         return root
+    }
+
+    fun updateReсyclerView(){
+
+        root.timetableRecyclerView.adapter= TimetableAdapter(actions, this)
     }
 
     override fun onDeleteItemClick(item: Action) {

@@ -9,7 +9,7 @@ import com.example.semmhosapp.model.Action
 import com.example.semmhosapp.model.TimetableAtDay
 import kotlinx.android.synthetic.main.timetable_list_item.view.*
 
-class TimetableAdapter(val timetableAtDay: TimetableAtDay, val listener: Listener? = null) : RecyclerView.Adapter<TimetableAdapter.ActionViewHolder>() {
+class TimetableAdapter(val actions: List<Action>, val listener: Listener? = null) : RecyclerView.Adapter<TimetableAdapter.ActionViewHolder>() {
     interface Listener{
         fun onDeleteItemClick(item: Action)
         fun onClickItem(item: Action)
@@ -33,17 +33,17 @@ class TimetableAdapter(val timetableAtDay: TimetableAtDay, val listener: Listene
     }
 
     override fun getItemCount(): Int {
-        return timetableAtDay.actions.size
+        return actions.size
     }
 
     override fun onBindViewHolder(holder: ActionViewHolder, position: Int) {
-        holder.bind(timetableAtDay.actions[position])
+        holder.bind(actions[position])
         if (listener != null){
             holder.itemView.deleteActionButton.setOnClickListener {
-                listener.onDeleteItemClick(timetableAtDay.actions[position])
+                listener.onDeleteItemClick(actions[position])
             }
             holder.itemView.setOnClickListener {
-                listener.onClickItem(timetableAtDay.actions[position])
+                listener.onClickItem(actions[position])
             }
         }
     }

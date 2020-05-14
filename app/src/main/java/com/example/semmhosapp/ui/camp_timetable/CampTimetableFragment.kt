@@ -18,7 +18,7 @@ class CampTimetableFragment : SelectDateFragment() {
     override fun onSelectDate() {
         val timeTableAtDate = FirestoreDB.timetableAtCamp.value?.getTableAtDay(selectedDate)
         timeTableAtDate?.let {
-            root.recytlerView.adapter = TimetableAdapter(it)
+            root.recytlerView.adapter = TimetableAdapter(it.actions)
         }
     }
 
@@ -36,7 +36,7 @@ class CampTimetableFragment : SelectDateFragment() {
         FirestoreDB.timetableAtCamp.observeForever {
             val timeTableAtDate = it.getTableAtDay(selectedDate)
             timeTableAtDate?.let {
-                root.recytlerView.adapter = TimetableAdapter(it)
+                root.recytlerView.adapter = TimetableAdapter(it.actions)
             }
             NotificationHelper.setNotifications(it)
         }
