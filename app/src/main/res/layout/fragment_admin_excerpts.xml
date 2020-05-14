@@ -13,7 +13,7 @@
         android:ems="10"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="99dp" />
+        app:layout_constraintTop_toBottomOf="@+id/chapterIn" />
 
     <EditText
         android:id="@+id/bookIn"
@@ -24,7 +24,7 @@
         app:layout_constraintEnd_toStartOf="@+id/lastExcerpt"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="99dp" />
+        app:layout_constraintTop_toBottomOf="@+id/bookIn" />
 
     <EditText
         android:id="@+id/firstExcerpt"
@@ -131,17 +131,19 @@
         android:id="@+id/bookIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="Книга"
-        tools:layout_editor_absoluteX="19dp"
-        tools:layout_editor_absoluteY="76dp" />
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+        tools:layout_editor_absoluteX="19dp" />
 
     <TextView
         android:id="@+id/chapterIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="Глава"
-        tools:layout_editor_absoluteX="331dp"
-        tools:layout_editor_absoluteY="70dp" />
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+        tools:layout_editor_absoluteX="331dp" />
 
     <TextView
         android:id="@+id/firstExcerpt"

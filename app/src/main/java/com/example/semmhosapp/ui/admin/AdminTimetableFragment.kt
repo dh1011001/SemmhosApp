@@ -1,5 +1,6 @@
 package com.example.semmhosapp.ui.admin
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.example.semmhosapp.model.Action
 import com.example.semmhosapp.model.TimetableAtDay
 import com.example.semmhosapp.ui.camp_timetable.TimetableAdapter
 import com.example.semmhosapp.ui.common.SelectDateFragment
+import kotlinx.android.synthetic.main.dialog_action.view.*
 import kotlinx.android.synthetic.main.fragment_admin_timetable.view.*
 import kotlinx.android.synthetic.main.fragment_bible_excerpt_text.view.*
 import kotlinx.android.synthetic.main.fragment_camp_timetable.view.*
@@ -21,6 +23,7 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 class   AdminTimetableFragment : SelectDateFragment(), TimetableAdapter.Listener{
+    lateinit var actions: MutableList<Action>
 
     override fun onSelectDate() {
         actions = FirestoreDB.timetableAtCamp.value?.getTableAtDay(selectedDate)?.actions?.toMutableList() ?: mutableListOf()
@@ -28,7 +31,6 @@ class   AdminTimetableFragment : SelectDateFragment(), TimetableAdapter.Listener
 
     }
 
-    lateinit var actions: MutableList<Action>
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,19 +43,48 @@ class   AdminTimetableFragment : SelectDateFragment(), TimetableAdapter.Listener
             updateReсyclerView()
         })
         root.timetableRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        root.addActionButton.setOnClickListener {
+            showActionDialog(null)
+            updateReсyclerView()
+        }
         return root
     }
 
     fun updateReсyclerView(){
-
-        root.timetableRecyclerView.adapter= TimetableAdapter(actions, this)
+        root.timetableRecyclerView.adapter= TimetableAdapter(actions.sortedBy { it.time }, this)
     }
 
     override fun onDeleteItemClick(item: Action) {
-        Toast.makeText(requireContext(), "delete", Toast.LENGTH_SHORT).show()
+        actions.remove(item)
+        updateReсyclerView()
     }
 
     override fun onClickItem(item: Action) {
-        Toast.makeText(requireContext(), "item click", Toast.LENGTH_SHORT).show()
+        showActionDialog(item)
+        updateReсyclerView()
+    }
+
+    fun showActionDialog(action: Action?){
+        val view =LayoutInflater.from(requireContext()).inflate(R.layout.dialog_action, null)
+        view.simpleTimePicker.setIs24HourView(true)
+        view.simpleTimePicker.hour = action?.time?.hour ?: LocalTime.now().hour
+        view.simpleTimePicker.minute = action?.time?.minute ?: LocalTime.now().minute
+        view.actionNameEditText.setText(action?.name ?: "")
+        AlertDialog.Builder(requireContext())
+            .setView(view)
+            .setTitle(if (action == null) "Добавление события" else "Редактирование события")
+            .setPositiveButton("OK"){dialog, which ->
+                val newAction = Action(
+                    0,
+                    LocalTime.of(view.simpleTimePicker.hour, view.simpleTimePicker.minute),  //id поправить
+                    view.actionNameEditText.text.toString()
+                )
+                if(action != null)
+                    actions.remove(action)
+                actions.add(newAction)
+            }
+            .setNegativeButton("Отмена", null)
+            .create()
+            .show()
     }
 }
