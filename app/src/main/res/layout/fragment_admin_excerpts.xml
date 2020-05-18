@@ -1,164 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/chapterIn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chapterIn" />
-
-    <EditText
-        android:id="@+id/bookIn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="number"
-        app:layout_constraintEnd_toStartOf="@+id/lastExcerpt"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bookIn" />
-
-    <EditText
-        android:id="@+id/firstExcerpt"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="number"
-        app:layout_constraintEnd_toStartOf="@+id/lastExcerpt"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="144dp" />
-
-    <EditText
-        android:id="@+id/lastExcerpt"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="144dp" />
-
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/dateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Ин 10:1-2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/firstExcerpt" />
-
-    <Button
-        android:id="@+id/buttonSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Сохранить"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="114dp">
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dateTextView">
 
         <RadioButton
-            android:id="@+id/radioButtonFree"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Свободное чтение" />
-
-        <RadioButton
-            android:id="@+id/radioButtonGroup"
+            android:id="@+id/groupReading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Групповое чтение" />
+
+        <RadioButton
+            android:id="@+id/freeReading"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Свободное чтение" />
     </RadioGroup>
 
-    <Button
-        android:id="@+id/buttonClean"
+    <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Очистить"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+        tools:layout_editor_absoluteX="1dp">
+
+        <EditText
+            android:id="@+id/book"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Книга"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/chapter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Глава"
+            android:inputType="phone" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        tools:layout_editor_absoluteX="1dp">
+
+        <EditText
+            android:id="@+id/startExcerpt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Со стиха"
+            android:inputType="phone" />
+
+        <EditText
+            android:id="@+id/endExcerpt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="По стих"
+            android:inputType="phone" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout4"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="32dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+        <Button
+            android:id="@+id/buttonSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Сохранить" />
+
+        <Button
+            android:id="@+id/buttonClean"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Отчистить " />
+    </LinearLayout>
 
     <ScrollView
-        android:id="@+id/scrollView2"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonSave">
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/excerptTextView"
+            <EditText
+                android:id="@+id/editText10"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:isScrollContainer="true"
-                android:textAlignment="center"
-                android:textSize="20sp" />
+                android:layout_height="match_parent"
+                android:ems="10"
+                android:gravity="start|top"
+                android:inputType="textMultiLine" />
         </LinearLayout>
     </ScrollView>
-
-    <TextView
-        android:id="@+id/dateTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/bookIn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Книга"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup"
-        tools:layout_editor_absoluteX="19dp" />
-
-    <TextView
-        android:id="@+id/chapterIn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Глава"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup"
-        tools:layout_editor_absoluteX="331dp" />
-
-    <TextView
-        android:id="@+id/firstExcerpt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="189dp" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="336dp"
-        tools:layout_editor_absoluteY="193dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
