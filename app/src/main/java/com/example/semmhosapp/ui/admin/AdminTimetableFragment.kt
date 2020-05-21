@@ -45,8 +45,13 @@ class   AdminTimetableFragment : SelectDateFragment(), TimetableAdapter.Listener
         root.timetableRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         root.addActionButton.setOnClickListener {
             showActionDialog(null)
-            updateReсyclerView()
+
         }
+
+        root.saveActionsButton.setOnClickListener {
+            FirestoreDB.insertDayTimetableAtDb(TimetableAtDay(selectedDate, actions))
+        }
+
         return root
     }
 
@@ -82,9 +87,11 @@ class   AdminTimetableFragment : SelectDateFragment(), TimetableAdapter.Listener
                 if(action != null)
                     actions.remove(action)
                 actions.add(newAction)
+                updateReсyclerView()
             }
             .setNegativeButton("Отмена", null)
             .create()
             .show()
     }
+
 }

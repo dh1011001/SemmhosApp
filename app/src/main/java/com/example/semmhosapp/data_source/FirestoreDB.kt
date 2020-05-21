@@ -30,14 +30,18 @@ object FirestoreDB {
     val db = Firebase.firestore
     fun insertScheduleInDB(schedule: ExcerptSchedule){
         for (item in schedule.items){
-            val data = hashMapOf("date" to item.date.toString(),
-                "freeReading" to item.freeReadingExcerptAddress,
-                "groupReading" to item.groupReadingExcerptAddress)
-            db.collection("Excerpts").document(item.date.toString())
-                .set(data)
-                .addOnSuccessListener {  }
-                .addOnFailureListener{  }
+            insertExcerptAtDay(item)
         }
+    }
+
+    fun insertExcerptAtDay(item : ExcerptScheduleItem){
+        val data = hashMapOf("date" to item.date.toString(),
+            "freeReading" to item.freeReadingExcerptAddress,
+            "groupReading" to item.groupReadingExcerptAddress)
+        db.collection("Excerpts").document(item.date.toString())
+            .set(data)
+            .addOnSuccessListener {  }
+            .addOnFailureListener{  }
     }
 
     fun createDBExcerptListener() {
@@ -61,12 +65,17 @@ object FirestoreDB {
     
     fun insertTimetableAtDb(timetableAtCamp: TimetableAtCamp){
         for (item in timetableAtCamp.daysOfCamp){
-            val actions = item.actions.map { ActionWrapper(it) }
-            val actionWrapperList = ActionWrapperList(actions)
-            db.collection("CampTimetable").document(item.day.toString())
-                .set(actionWrapperList)
+            insertDayTimetableAtDb(item)
         }
     }
+
+    fun insertDayTimetableAtDb(item : TimetableAtDay){
+        val actions = item.actions.map { ActionWrapper(it) }
+        val actionWrapperList = ActionWrapperList(actions)
+        db.collection("CampTimetable").document(item.day.toString())
+            .set(actionWrapperList)
+    }
+
     fun createDBTimetableListener(){
         db.collection("CampTimetable")
             .addSnapshotListener{timetableAtDays, firebaseFirestoreException ->
@@ -79,7 +88,8 @@ object FirestoreDB {
                             LocalTime.parse(it.time),
                             it.name
                         ) }
-                        result.add(TimetableAtDay(LocalDate.parse(timetableAtDay.id), actions))
+
+                        result.add(TimetableAtDay(LocalDate.parse(timetableAtDay.id), actions.sortedBy { it.time }))
                     }
                     timetableAtCamp.value = TimetableAtCamp(result)
                 }

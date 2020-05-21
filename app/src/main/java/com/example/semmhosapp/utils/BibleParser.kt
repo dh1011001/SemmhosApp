@@ -7,7 +7,7 @@ import com.example.semmhosapp.R
 import com.example.semmhosapp.model.BibleExcerptAddress
 import org.xmlpull.v1.XmlPullParser
 
-class BibleItem(val title: String, val code: String, val childs: List<BibleItem>? = null)
+class BibleItem(val title: String, val code: String)
 
 object BibleParser {
     val oldTestamentBooks = listOf(
@@ -83,10 +83,7 @@ object BibleParser {
 
         )
 
-    val testaments = listOf(
-        BibleItem("Ветхий завет",  "Old",oldTestamentBooks),
-        BibleItem("Новый завет",  "New", newTestamentBooks)
-    )
+
 
 
     fun getBibleExcerpt (context: Context, address: BibleExcerptAddress) : List<String>?{
@@ -142,4 +139,6 @@ object BibleParser {
         }
         return null
     }
+
+
 }

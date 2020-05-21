@@ -5,6 +5,62 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:id="@+id/linearLayoutFR"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="1dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        tools:layout_editor_absoluteX="1dp">
+
+        <EditText
+            android:id="@+id/FRstartVerse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Со стиха"
+            android:inputType="phone" />
+
+        <EditText
+            android:id="@+id/FRendVerse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="По стих"
+            android:inputType="phone" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+        tools:layout_editor_absoluteX="1dp">
+
+        <EditText
+            android:id="@+id/FRbook"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Книга"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/FRchapter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:hint="Глава"
+            android:inputType="phone" />
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/dateTextView"
         android:layout_width="wrap_content"
@@ -29,6 +85,7 @@
             android:id="@+id/groupReading"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:checked="true"
             android:text="Групповое чтение" />
 
         <RadioButton
@@ -39,7 +96,7 @@
     </RadioGroup>
 
     <LinearLayout
-        android:id="@+id/linearLayout2"
+        android:id="@+id/linearLayoutGR"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:orientation="horizontal"
@@ -47,7 +104,7 @@
         tools:layout_editor_absoluteX="1dp">
 
         <EditText
-            android:id="@+id/book"
+            android:id="@+id/GRbook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -56,7 +113,7 @@
             android:inputType="textPersonName" />
 
         <EditText
-            android:id="@+id/chapter"
+            android:id="@+id/GRchapter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -76,7 +133,7 @@
         tools:layout_editor_absoluteX="1dp">
 
         <EditText
-            android:id="@+id/startExcerpt"
+            android:id="@+id/GRstartVerse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -85,7 +142,7 @@
             android:inputType="phone" />
 
         <EditText
-            android:id="@+id/endExcerpt"
+            android:id="@+id/GRendVerse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -93,6 +150,8 @@
             android:hint="По стих"
             android:inputType="phone" />
     </LinearLayout>
+
+
 
     <LinearLayout
         android:id="@+id/linearLayout4"

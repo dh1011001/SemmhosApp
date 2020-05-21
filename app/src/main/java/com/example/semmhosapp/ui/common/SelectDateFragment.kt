@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.DatePicker
 import androidx.fragment.app.Fragment
+import com.example.semmhosapp.MainActivity
 import com.example.semmhosapp.R
 import java.time.LocalDate
 
@@ -38,12 +39,14 @@ abstract  class SelectDateFragment: Fragment(), DatePickerDialog.OnDateSetListen
                 ).show()
             }
         }
+        (activity as MainActivity).supportActionBar?.title =  selectedDate.toString()
         return super.onOptionsItemSelected(item)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.select_date, menu)
         super.onCreateOptionsMenu(menu, inflater)
+        (activity as MainActivity).supportActionBar?.title =  selectedDate.toString()
     }
 
     protected abstract fun onSelectDate()
