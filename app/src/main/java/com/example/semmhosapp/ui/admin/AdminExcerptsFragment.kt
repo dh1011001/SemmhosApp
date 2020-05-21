@@ -26,6 +26,15 @@ class AdminExcerptFragment : SelectDateFragment(){
         setHasOptionsMenu(true)
         onSelectDate()
 
+        root.FRbook.visibility = View.INVISIBLE
+        root.GRbook.visibility = View.VISIBLE
+        root.FRchapter.visibility = View.INVISIBLE
+        root.GRchapter.visibility = View.VISIBLE
+        root.FRstartVerse.visibility = View.INVISIBLE
+        root.GRstartVerse.visibility = View.VISIBLE
+        root.FRendVerse.visibility = View.INVISIBLE
+        root.GRendVerse.visibility = View.VISIBLE
+
         root.buttonSave.setOnClickListener {
 
             if(checkFR() && checkGR()) {
@@ -39,11 +48,23 @@ class AdminExcerptFragment : SelectDateFragment(){
         }
         root.radioGroup.setOnCheckedChangeListener{group, checkedId ->
             if(root.freeReading.isChecked){
-                root.FRbook.visibility = View.VISIBLE     //Прописать для всех
+                root.FRbook.visibility = View.VISIBLE
                 root.GRbook.visibility = View.INVISIBLE
+                root.FRchapter.visibility = View.VISIBLE
+                root.GRchapter.visibility = View.INVISIBLE
+                root.FRstartVerse.visibility = View.VISIBLE
+                root.GRstartVerse.visibility = View.INVISIBLE
+                root.FRendVerse.visibility = View.VISIBLE
+                root.GRendVerse.visibility = View.INVISIBLE
             } else{
                 root.FRbook.visibility = View.INVISIBLE
                 root.GRbook.visibility = View.VISIBLE
+                root.FRchapter.visibility = View.INVISIBLE
+                root.GRchapter.visibility = View.VISIBLE
+                root.FRstartVerse.visibility = View.INVISIBLE
+                root.GRstartVerse.visibility = View.VISIBLE
+                root.FRendVerse.visibility = View.INVISIBLE
+                root.GRendVerse.visibility = View.VISIBLE
             }
         }
         return root
@@ -63,9 +84,9 @@ class AdminExcerptFragment : SelectDateFragment(){
         }
         else throw IllegalStateException ("Книга не найдена, че-то странное")
 
-        val chapter = root.GRchapter.toString().toInt()
-        val startVerse = root.GRstartVerse.toString().toInt()
-        val endVerse = root.GRendVerse.toString().toInt()
+        val chapter = root.GRchapter.text.toString().toInt()
+        val startVerse = root.GRstartVerse.text.toString().toInt()
+        val endVerse = root.GRendVerse.text.toString().toInt()
 
         return BibleExcerptAddress(testament, bookCode,chapter, startVerse, endVerse)
 
@@ -85,9 +106,9 @@ class AdminExcerptFragment : SelectDateFragment(){
         }
         else throw IllegalStateException ("Книга не найдена, че-то странное")
 
-        val chapter = root.FRchapter.toString().toInt()
-        val startVerse = root.FRstartVerse.toString().toInt()
-        val endVerse = root.FRendVerse.toString().toInt()
+        val chapter = root.FRchapter.text.toString().toInt()
+        val startVerse = root.FRstartVerse.text.toString().toInt()
+        val endVerse = root.FRendVerse.text.toString().toInt()
 
         return BibleExcerptAddress(testament, bookCode,chapter, startVerse, endVerse)
 
