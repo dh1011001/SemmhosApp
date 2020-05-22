@@ -11,6 +11,7 @@ import com.example.semmhosapp.model.BibleExcerptAddress
 import com.example.semmhosapp.model.ExcerptScheduleItem
 import com.example.semmhosapp.ui.common.SelectDateFragment
 import com.example.semmhosapp.utils.BibleParser
+import kotlinx.android.synthetic.main.fragment_admin_excerpts.*
 import kotlinx.android.synthetic.main.fragment_admin_excerpts.view.*
 import java.time.LocalDate
 
@@ -45,6 +46,10 @@ class AdminExcerptFragment : SelectDateFragment(){
                 )
                 FirestoreDB.insertExcerptAtDay(excerptScheduleItem)
             } else Toast.makeText(requireContext(), "Неожиданные данные", Toast.LENGTH_LONG).show()
+
+
+
+
         }
         root.radioGroup.setOnCheckedChangeListener{group, checkedId ->
             if(root.freeReading.isChecked){
@@ -56,7 +61,38 @@ class AdminExcerptFragment : SelectDateFragment(){
                 root.GRstartVerse.visibility = View.INVISIBLE
                 root.FRendVerse.visibility = View.VISIBLE
                 root.GRendVerse.visibility = View.INVISIBLE
+
+                if(checkFR()) {
+                    val freeRedingAdress = getAddresesFromAdminFR();
+                    if (freeRedingAdress != null) {
+                        val freeRedingList =
+                            BibleParser.getBibleExcerpt(requireContext(), freeRedingAdress)
+                        if (freeRedingList != null) {
+                            var bofResultStr = ""
+                            for (text in freeRedingList) {
+                                bofResultStr += text + "\n"
+                            }
+                            root.previewExcerpt.setText(bofResultStr);
+
+                        }
+                    }
+                }
             } else{
+                if(checkGR()) {
+                    val groupRedingAdress = getAddresesFromAdminGR();
+                    if (groupRedingAdress != null) {
+                        val groupRedingList =
+                            BibleParser.getBibleExcerpt(requireContext(), groupRedingAdress)
+                        if (groupRedingList != null) {
+                            var bofResultStr = ""
+                            for (text in groupRedingList) {
+                                bofResultStr += text + "\n"
+                            }
+                            root.previewExcerpt.setText(bofResultStr);
+
+                        }
+                    }
+                }
                 root.FRbook.visibility = View.INVISIBLE
                 root.GRbook.visibility = View.VISIBLE
                 root.FRchapter.visibility = View.INVISIBLE

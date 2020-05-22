@@ -194,12 +194,16 @@
             android:orientation="vertical" >
 
             <EditText
-                android:id="@+id/editText10"
+                android:id="@+id/previewExcerpt"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:clickable="false"
+                android:contextClickable="false"
                 android:ems="10"
                 android:gravity="start|top"
-                android:inputType="textMultiLine" />
+                android:inputType="textMultiLine|textNoSuggestions"
+                android:selectAllOnFocus="false"
+                android:textIsSelectable="false" />
         </LinearLayout>
     </ScrollView>
 
