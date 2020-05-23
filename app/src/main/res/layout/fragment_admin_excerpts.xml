@@ -182,6 +182,7 @@
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:clickable="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -191,7 +192,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <EditText
                 android:id="@+id/previewExcerpt"
@@ -202,8 +203,7 @@
                 android:ems="10"
                 android:gravity="start|top"
                 android:inputType="textMultiLine|textNoSuggestions"
-                android:selectAllOnFocus="false"
-                android:textIsSelectable="false" />
+                android:textColor="#000000" />
         </LinearLayout>
     </ScrollView>
 

@@ -36,6 +36,9 @@ class AdminExcerptFragment : SelectDateFragment(){
         root.FRendVerse.visibility = View.INVISIBLE
         root.GRendVerse.visibility = View.VISIBLE
 
+        root.previewExcerpt.setEnabled(false)
+        root.previewExcerpt.setFocusable(false)
+
         root.buttonSave.setOnClickListener {
 
             if(checkFR() && checkGR()) {
@@ -46,11 +49,10 @@ class AdminExcerptFragment : SelectDateFragment(){
                 )
                 FirestoreDB.insertExcerptAtDay(excerptScheduleItem)
             } else Toast.makeText(requireContext(), "Неожиданные данные", Toast.LENGTH_LONG).show()
-
-
-
-
         }
+
+
+
         root.radioGroup.setOnCheckedChangeListener{group, checkedId ->
             if(root.freeReading.isChecked){
                 root.FRbook.visibility = View.VISIBLE

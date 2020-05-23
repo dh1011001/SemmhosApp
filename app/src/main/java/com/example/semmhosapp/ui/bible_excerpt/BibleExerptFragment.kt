@@ -30,6 +30,7 @@ class BibleExerptFragment : SelectDateFragment() {
             savedInstanceState: Bundle?
     ): View? {
 
+
         root = inflater.inflate(R.layout.fragment_bible_excerpt, container, false)
         setHasOptionsMenu(true)
         FirestoreDB.excerptSchedule.observeForever{onSelectDate()}
@@ -48,6 +49,21 @@ class BibleExerptFragment : SelectDateFragment() {
                     bofResultStr += text + "\n"
                 }
                 root.dateTextView.setText("Текст на " + selectedDate.toString())
+
+                val book = FirestoreDB.excerptSchedule.value!!.getItemByDate(selectedDate)?.freeReadingExcerptAddress!!.book.toInt()
+                val bookInString : String
+
+                if (BibleParser.oldTestamentBooks.find{it.code.toInt() == book} != null) {
+                    bookInString = BibleParser.oldTestamentBooks.find{it.code.toInt() == book}!!.title
+                }
+                else if(BibleParser.newTestamentBooks.find{it.code.toInt() == book} != null){
+                    bookInString = BibleParser.newTestamentBooks.find{it.code.toInt() == book}!!.title
+                } else{
+                    bookInString = ""
+                }
+
+                root.addressTextView.setText(bookInString + " " + freeRedingAdress.chapter)
+
                 freeReadingText.value = bofResultStr
 
             }
@@ -63,6 +79,20 @@ class BibleExerptFragment : SelectDateFragment() {
                 for(text in groupRedingList){
                     bofResultStr += text + "\n"
                 }
+                val book = FirestoreDB.excerptSchedule.value!!.getItemByDate(selectedDate)?.freeReadingExcerptAddress!!.book.toInt()
+                val bookInString : String
+
+                if (BibleParser.oldTestamentBooks.find{it.code.toInt() == book} != null) {
+                    bookInString = BibleParser.oldTestamentBooks.find{it.code.toInt() == book}!!.title
+                }
+                else if(BibleParser.newTestamentBooks.find{it.code.toInt() == book} != null){
+                    bookInString = BibleParser.newTestamentBooks.find{it.code.toInt() == book}!!.title
+                } else{
+                    bookInString = ""
+                }
+
+                root.addressTextView.setText(bookInString + " " + groupRedingAdress.chapter)
+
                 root.dateTextView.setText("Текст на " + selectedDate.toString())
                 groupReadingText.value = bofResultStr
 
