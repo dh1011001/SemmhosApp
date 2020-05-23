@@ -18,7 +18,7 @@
             android:title="@string/menu_timetable" />
         <item
             android:id="@+id/nav_admin"
-            android:icon="@drawable/calendar"
+            android:icon="@android:drawable/ic_menu_agenda"
             android:title="@string/menu_admin" />
     </group>
 </menu>
