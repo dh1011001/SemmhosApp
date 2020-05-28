@@ -1,5 +1,6 @@
 package com.example.semmhosapp.ui.admin
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import com.example.semmhosapp.R
 import com.example.semmhosapp.data_source.FirestoreDB
 import com.example.semmhosapp.model.BibleExcerptAddress
 import com.example.semmhosapp.model.ExcerptScheduleItem
+import com.example.semmhosapp.ui.bible_excerpt.BibleExerptFragment
 import com.example.semmhosapp.ui.common.SelectDateFragment
 import com.example.semmhosapp.utils.BibleParser
 import kotlinx.android.synthetic.main.fragment_admin_excerpts.*
@@ -26,6 +28,7 @@ class AdminExcerptFragment : SelectDateFragment(){
         root = inflater.inflate(R.layout.fragment_admin_excerpts, container, false)
         setHasOptionsMenu(true)
         onSelectDate()
+        showPrewExcerpt()
 
         root.FRbook.visibility = View.INVISIBLE
         root.GRbook.visibility = View.VISIBLE
@@ -88,7 +91,7 @@ class AdminExcerptFragment : SelectDateFragment(){
                             for (text in freeRedingList) {
                                 bofResultStr += text + "\n"
                             }
-                            root.previewExcerpt.setText(bofResultStr);
+                            root.previewExcerpt.setText(bofResultStr)
 
                         }
                     }
@@ -119,7 +122,42 @@ class AdminExcerptFragment : SelectDateFragment(){
                 root.GRendVerse.visibility = View.VISIBLE
             }
         }
+
+
         return root
+    }
+
+    fun showPrewExcerpt(){
+        if(checkFR()) {
+            val freeRedingAdress = getAddresesFromAdminFR();
+            if (freeRedingAdress != null) {
+                val freeRedingList =
+                    BibleParser.getBibleExcerpt(requireContext(), freeRedingAdress)
+                if (freeRedingList != null) {
+                    var bofResultStr = ""
+                    for (text in freeRedingList) {
+                        bofResultStr += text + "\n"
+                    }
+                    root.previewExcerpt.setText(bofResultStr)
+
+                }
+            }
+        }else root.previewExcerpt.setText("Чек не прошел")
+        if(checkGR()) {
+            val groupRedingAdress = getAddresesFromAdminGR();
+            if (groupRedingAdress != null) {
+                val groupRedingList =
+                    BibleParser.getBibleExcerpt(requireContext(), groupRedingAdress)
+                if (groupRedingList != null) {
+                    var bofResultStr = ""
+                    for (text in groupRedingList) {
+                        bofResultStr += text + "\n"
+                    }
+                    root.previewExcerpt.setText(bofResultStr);
+
+                }
+            }
+        }else root.previewExcerpt.setText("Чек не прошел")
     }
 
     fun getAddresesFromAdminGR() : BibleExcerptAddress{
@@ -169,6 +207,54 @@ class AdminExcerptFragment : SelectDateFragment(){
 
     override fun onSelectDate() {
         root.dateTextView.setText("Текст на " + selectedDate.toString())
+        showPrewExcerpt()
+
+        val freeRedingAdress = FirestoreDB.excerptSchedule.value!!.getItemByDate(selectedDate)?.freeReadingExcerptAddress
+        if (freeRedingAdress != null){
+            root.FRbook.setText(makeBookStr(freeRedingAdress.book))
+            root.FRchapter.setText(freeRedingAdress.chapter.toString())
+            root.FRstartVerse.setText(freeRedingAdress.startVerse.toString())
+            root.FRendVerse.setText(freeRedingAdress.endVerse.toString())
+
+        } else {
+            root.FRbook.setText("")
+            root.FRchapter.setText("")
+            root.FRendVerse.setText("")
+            root.FRstartVerse.setText("")
+
+            root.GRbook.setText("")
+            root.GRchapter.setText("")
+            root.GRstartVerse.setText("")
+            root.GRendVerse.setText("")
+
+            root.previewExcerpt.setText("")
+
+            root.previewExcerpt.setText("Тут пусто")
+        }
+
+        val groupRedingAdress = FirestoreDB.excerptSchedule.value!!.getItemByDate(selectedDate)?.groupReadingExcerptAddress
+        if (groupRedingAdress != null){
+            root.GRbook.setText(makeBookStr(groupRedingAdress.book))
+            root.GRchapter.setText(groupRedingAdress.chapter.toString())
+            root.GRstartVerse.setText(groupRedingAdress.startVerse.toString())
+            root.GRendVerse.setText(groupRedingAdress.endVerse.toString())
+        } else {
+
+            root.FRbook.setText("")
+            root.FRchapter.setText("")
+            root.FRendVerse.setText("")
+            root.FRstartVerse.setText("")
+
+            root.GRbook.setText("")
+            root.GRchapter.setText("")
+            root.GRstartVerse.setText("")
+            root.GRendVerse.setText("")
+
+            root.previewExcerpt.setText("")
+            root.previewExcerpt.setText("Тут пусто")
+
+        }
+
     }
 
 
@@ -181,5 +267,20 @@ class AdminExcerptFragment : SelectDateFragment(){
             root.GRchapter != null && root.GRstartVerse != null && root.GRendVerse != null
 
 }
+
+fun makeBookStr(book: Int) : String {
+    val bookInString : String
+    if (BibleParser.oldTestamentBooks.find{it.code.toInt() == book} != null) {
+        bookInString = BibleParser.oldTestamentBooks.find{it.code.toInt() == book}!!.title
+    }
+    else if(BibleParser.newTestamentBooks.find{it.code.toInt() == book} != null){
+        bookInString = BibleParser.newTestamentBooks.find{it.code.toInt() == book}!!.title
+    } else{
+        bookInString = ""
+
+    }
+    return bookInString
+}
+
 
 

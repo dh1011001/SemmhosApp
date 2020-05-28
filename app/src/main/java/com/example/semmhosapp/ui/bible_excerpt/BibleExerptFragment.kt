@@ -51,16 +51,7 @@ class BibleExerptFragment : SelectDateFragment() {
                 root.dateTextView.setText("Текст на " + selectedDate.toString())
 
                 val book = FirestoreDB.excerptSchedule.value!!.getItemByDate(selectedDate)?.freeReadingExcerptAddress!!.book.toInt()
-                val bookInString : String
-
-                if (BibleParser.oldTestamentBooks.find{it.code.toInt() == book} != null) {
-                    bookInString = BibleParser.oldTestamentBooks.find{it.code.toInt() == book}!!.title
-                }
-                else if(BibleParser.newTestamentBooks.find{it.code.toInt() == book} != null){
-                    bookInString = BibleParser.newTestamentBooks.find{it.code.toInt() == book}!!.title
-                } else{
-                    bookInString = ""
-                }
+                val bookInString = makeBookStr(book)
 
                 root.addressTextView.setText(bookInString + " " + freeRedingAdress.chapter)
 
@@ -80,16 +71,7 @@ class BibleExerptFragment : SelectDateFragment() {
                     bofResultStr += text + "\n"
                 }
                 val book = FirestoreDB.excerptSchedule.value!!.getItemByDate(selectedDate)?.freeReadingExcerptAddress!!.book.toInt()
-                val bookInString : String
-
-                if (BibleParser.oldTestamentBooks.find{it.code.toInt() == book} != null) {
-                    bookInString = BibleParser.oldTestamentBooks.find{it.code.toInt() == book}!!.title
-                }
-                else if(BibleParser.newTestamentBooks.find{it.code.toInt() == book} != null){
-                    bookInString = BibleParser.newTestamentBooks.find{it.code.toInt() == book}!!.title
-                } else{
-                    bookInString = ""
-                }
+                val bookInString = makeBookStr(book)
 
                 root.addressTextView.setText(bookInString + " " + groupRedingAdress.chapter)
 
@@ -100,6 +82,20 @@ class BibleExerptFragment : SelectDateFragment() {
         } else {
             groupReadingText.value = "Нет отрывка на данный день"
         }
+    }
+
+    fun makeBookStr(book: Int) : String {
+        val bookInString : String
+        if (BibleParser.oldTestamentBooks.find{it.code.toInt() == book} != null) {
+            bookInString = BibleParser.oldTestamentBooks.find{it.code.toInt() == book}!!.title
+        }
+        else if(BibleParser.newTestamentBooks.find{it.code.toInt() == book} != null){
+            bookInString = BibleParser.newTestamentBooks.find{it.code.toInt() == book}!!.title
+        } else{
+            bookInString = ""
+
+        }
+        return bookInString
     }
 
 
@@ -137,6 +133,8 @@ class BibleExerptFragment : SelectDateFragment() {
             }
         }
         override fun getCount() = 2
+
+
 
     }
 }
