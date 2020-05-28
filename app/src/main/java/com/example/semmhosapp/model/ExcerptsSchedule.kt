@@ -13,8 +13,8 @@ class BibleExcerptAddress(
 
 class ExcerptScheduleItem(
     val date : LocalDate,
-    val freeReadingExcerptAddress: BibleExcerptAddress,
-    val groupReadingExcerptAddress: BibleExcerptAddress
+    val freeReadingExcerptAddress: BibleExcerptAddress?,
+    val groupReadingExcerptAddress: BibleExcerptAddress?
 
 )
 

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import com.example.semmhosapp.R
 import com.example.semmhosapp.data_source.FirestoreDB
@@ -19,6 +20,25 @@ import java.time.LocalDate
 
 
 class AdminExcerptFragment : SelectDateFragment(){
+
+    val bookEditText: EditText
+        get(){
+            return if (root.freeReading.isChecked) root.FRbook else root.GRbook
+        }
+
+
+
+    //fun bookEditText() = if (root.freeReading.isChecked) root.FRbook else root.GRbook
+    fun setVisible(){
+        root.FRbook.visibility = if (root.freeReading.isChecked) View.VISIBLE else View.INVISIBLE
+        root.GRbook.visibility = View.VISIBLE
+        root.FRchapter.visibility = View.INVISIBLE
+        root.GRchapter.visibility = View.VISIBLE
+        root.FRstartVerse.visibility = View.INVISIBLE
+        root.GRstartVerse.visibility = View.VISIBLE
+        root.FRendVerse.visibility = View.INVISIBLE
+        root.GRendVerse.visibility = View.VISIBLE
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -207,7 +227,8 @@ class AdminExcerptFragment : SelectDateFragment(){
 
     override fun onSelectDate() {
         root.dateTextView.setText("Текст на " + selectedDate.toString())
-        showPrewExcerpt()
+
+
 
         val freeRedingAdress = FirestoreDB.excerptSchedule.value!!.getItemByDate(selectedDate)?.freeReadingExcerptAddress
         if (freeRedingAdress != null){
@@ -255,12 +276,14 @@ class AdminExcerptFragment : SelectDateFragment(){
 
         }
 
+        showPrewExcerpt()
+
     }
 
 
-    fun checkFR() =(BibleParser.oldTestamentBooks.find { it.title == root.FRbook.text.toString() } != null ||
+    fun checkFR() =(BibleParser.oldTestamentBooks.find { it.title == bookEditText.text.toString() } != null ||
                 BibleParser.newTestamentBooks.find { it.title == root.FRbook.text.toString() } != null) &&
-                root.FRchapter != null && root.FRstartVerse != null && root.FRendVerse != null
+                root.FRchapter.text.toString().isNotEmpty()&& root.FRstartVerse.text.toString().isNotEmpty() && root.FRendVerse.text.toString().isNotEmpty()
 
     fun checkGR() =(BibleParser.oldTestamentBooks.find { it.title == root.GRbook.text.toString() } != null ||
             BibleParser.newTestamentBooks.find { it.title == root.GRbook.text.toString() } != null) &&
