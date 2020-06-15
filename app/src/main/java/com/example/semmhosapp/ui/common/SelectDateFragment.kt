@@ -33,7 +33,7 @@ abstract  class SelectDateFragment: Fragment(), DatePickerDialog.OnDateSetListen
                     requireContext(),
                     this,
                     selectedDate.year,
-                    selectedDate.monthValue,
+                    selectedDate.monthValue, //0
                     selectedDate.dayOfMonth
 
                 ).show()
