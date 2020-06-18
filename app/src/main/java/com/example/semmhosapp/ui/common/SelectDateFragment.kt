@@ -33,26 +33,30 @@ abstract  class SelectDateFragment: Fragment(), DatePickerDialog.OnDateSetListen
                     requireContext(),
                     this,
                     selectedDate.year,
-                    selectedDate.monthValue, //0
+                    selectedDate.monthValue-1, //0
                     selectedDate.dayOfMonth
 
                 ).show()
             }
         }
-        (activity as MainActivity).supportActionBar?.title =  selectedDate.toString()
+        updateView()
         return super.onOptionsItemSelected(item)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.select_date, menu)
         super.onCreateOptionsMenu(menu, inflater)
-        (activity as MainActivity).supportActionBar?.title =  selectedDate.toString()
+        updateView()
     }
 
     protected abstract fun onSelectDate()
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        selectedDate = LocalDate.of(year, month, dayOfMonth)
+        selectedDate = LocalDate.of(year, month+1, dayOfMonth)
+        updateView()
         onSelectDate()
+    }
+    fun updateView(){
+        (activity as MainActivity).supportActionBar?.title =  selectedDate.toString()
     }
 }

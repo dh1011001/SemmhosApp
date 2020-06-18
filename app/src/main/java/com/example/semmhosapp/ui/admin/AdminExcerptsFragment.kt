@@ -20,13 +20,6 @@ import java.time.LocalDate
 
 
 class AdminExcerptFragment : SelectDateFragment(){
-
-    val bookEditText: EditText
-    get(){
-        return if (root.freeReading.isChecked) root.FRbook else root.GRbook
-    }
-
-
     fun setVisible(){
         root.FRbook.visibility = if (root.freeReading.isChecked) View.VISIBLE else View.INVISIBLE
         root.GRbook.visibility = if (root.groupReading.isChecked) View.VISIBLE else View.INVISIBLE
@@ -70,7 +63,8 @@ class AdminExcerptFragment : SelectDateFragment(){
                 )
                 FirestoreDB.insertExcerptAtDay(excerptScheduleItem)
 
-            } else Toast.makeText(requireContext(), "Неожиданные данные", Toast.LENGTH_LONG).show()
+            } else
+                Toast.makeText(requireContext(), "Неожиданные данные", Toast.LENGTH_LONG).show()
         }
         root.buttonClean.setOnClickListener {
             clearAdminSetings()
@@ -185,7 +179,7 @@ class AdminExcerptFragment : SelectDateFragment(){
     }
 
 
-    fun checkFR() =(BibleParser.oldTestamentBooks.find { it.title == bookEditText.text.toString() } != null ||
+    fun checkFR() =(BibleParser.oldTestamentBooks.find { it.title == root.FRbook.text.toString() } != null ||
                 BibleParser.newTestamentBooks.find { it.title == root.FRbook.text.toString() } != null) &&
                 root.FRchapter.text.toString().isNotEmpty()&& root.FRstartVerse.text.toString().isNotEmpty() && root.FRendVerse.text.toString().isNotEmpty()
 

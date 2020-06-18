@@ -53,7 +53,7 @@ object FirestoreDB {
                     val date = item.getString("date")
                     val freeReading = item.getField<BibleExcerptAddress>("freeReading")
                     val groupReading = item.getField<BibleExcerptAddress>("groupReading")
-                    if(date != null && freeReading != null && groupReading != null) {
+                    if(date != null && (freeReading != null || groupReading != null)) {
                         val excerptScheduleItem = ExcerptScheduleItem(LocalDate.parse(date), freeReading, groupReading)
                         list.add(excerptScheduleItem)
                     }

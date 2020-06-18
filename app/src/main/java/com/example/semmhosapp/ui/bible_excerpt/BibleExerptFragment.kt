@@ -49,15 +49,18 @@ class BibleExerptFragment : SelectDateFragment() {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
                     if (tab!!.position == 0){
                         val freeRedingAdress = FirestoreDB.excerptSchedule.value!!.getItemByDate(selectedDate)?.freeReadingExcerptAddress
-                        val book = FirestoreDB.excerptSchedule.value!!.getItemByDate(selectedDate)?.freeReadingExcerptAddress!!.book.toInt()
-                        val bookInString = makeBookStr(book)
-                        root.addressTextView.setText(bookInString + " " + freeRedingAdress!!.chapter)
+                        freeRedingAdress?.let {
+                            val bookInString = makeBookStr(it.book)
+                            root.addressTextView.setText(bookInString + " " + freeRedingAdress!!.chapter)
+                        }
                     }
                     if (tab!!.position == 1){
                         val groupRedingAdress = FirestoreDB.excerptSchedule.value!!.getItemByDate(selectedDate)?.groupReadingExcerptAddress
-                        val book = FirestoreDB.excerptSchedule.value!!.getItemByDate(selectedDate)?.groupReadingExcerptAddress!!.book.toInt()
-                        val bookInString = makeBookStr(book)
-                        root.addressTextView.setText(bookInString + " " + groupRedingAdress!!.chapter)
+                        groupRedingAdress?.let {
+                            val bookInString = makeBookStr(it.book)
+                            root.addressTextView.setText(bookInString + " " + groupRedingAdress!!.chapter)
+                        }
+
                     }
 
                 }
@@ -78,7 +81,7 @@ class BibleExerptFragment : SelectDateFragment() {
                 }
                 root.dateTextView.setText("Текст на " + selectedDate.toString())
 
-                val book = FirestoreDB.excerptSchedule.value!!.getItemByDate(selectedDate)?.freeReadingExcerptAddress!!.book.toInt()
+                val book = FirestoreDB.excerptSchedule.value!!.getItemByDate(selectedDate)?.freeReadingExcerptAddress!!.book
                 val bookInString = makeBookStr(book)
 
                 root.addressTextView.setText(bookInString + " " + freeRedingAdress.chapter)
@@ -98,7 +101,7 @@ class BibleExerptFragment : SelectDateFragment() {
                 for(text in groupRedingList){
                     bofResultStr += text + "\n"
                 }
-                val book = FirestoreDB.excerptSchedule.value!!.getItemByDate(selectedDate)?.freeReadingExcerptAddress!!.book.toInt()
+                val book = FirestoreDB.excerptSchedule.value!!.getItemByDate(selectedDate)?.groupReadingExcerptAddress!!.book
                 val bookInString = makeBookStr(book)
 
                 root.addressTextView.setText(bookInString + " " + groupRedingAdress.chapter)
