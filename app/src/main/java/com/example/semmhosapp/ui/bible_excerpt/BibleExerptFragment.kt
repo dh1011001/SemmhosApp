@@ -13,6 +13,7 @@ import com.example.semmhosapp.data_source.FirestoreDB
 import com.example.semmhosapp.ui.common.SelectDateFragment
 
 import com.example.semmhosapp.utils.BibleParser
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_bible_excerpt.view.*
 import kotlinx.android.synthetic.main.fragment_bible_excerpt_text.view.*
 
@@ -36,9 +37,33 @@ class BibleExerptFragment : SelectDateFragment() {
         FirestoreDB.excerptSchedule.observeForever{onSelectDate()}
         root.viewPager.adapter = ExcerptPagerAdapter(childFragmentManager)
         root.tabLayout.setupWithViewPager(root.viewPager)
-        root.tabLayout.setOnTabSelectedListener{
+        root.tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
+                override fun onTabReselected(tab: TabLayout.Tab?) {
 
-        }
+                }
+
+                override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+                }
+
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    if (tab!!.position == 0){
+                        val freeRedingAdress = FirestoreDB.excerptSchedule.value!!.getItemByDate(selectedDate)?.freeReadingExcerptAddress
+                        val book = FirestoreDB.excerptSchedule.value!!.getItemByDate(selectedDate)?.freeReadingExcerptAddress!!.book.toInt()
+                        val bookInString = makeBookStr(book)
+                        root.addressTextView.setText(bookInString + " " + freeRedingAdress!!.chapter)
+                    }
+                    if (tab!!.position == 1){
+                        val groupRedingAdress = FirestoreDB.excerptSchedule.value!!.getItemByDate(selectedDate)?.groupReadingExcerptAddress
+                        val book = FirestoreDB.excerptSchedule.value!!.getItemByDate(selectedDate)?.groupReadingExcerptAddress!!.book.toInt()
+                        val bookInString = makeBookStr(book)
+                        root.addressTextView.setText(bookInString + " " + groupRedingAdress!!.chapter)
+                    }
+
+                }
+
+            })
+
         return root
     }
 
