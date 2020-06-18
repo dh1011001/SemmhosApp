@@ -83,11 +83,30 @@ object BibleParser {
 
         )
 
+    fun makeBookStr(book: Int): String? =  oldTestamentBooks.find{it.code.toInt() == book}?.title ?:
+        newTestamentBooks.find{it.code.toInt() == book}?.title
+
+    fun makeBookInt(book: String): Int? = oldTestamentBooks.find { it.title == book }?.code?.toIntOrNull() ?:
+        newTestamentBooks.find { it.title == book }?.code?.toIntOrNull()
+
+    fun testamentByBook(book: String): String? = if (oldTestamentBooks.find { it.title == book } != null)
+            "Old"
+        else if (newTestamentBooks.find { it.title == book } != null)
+            "New"
+        else
+            null
+
+    fun testamentByBook(book: Int): String?{
+        val bookString = makeBookStr(book)
+        return if (bookString != null)
+            testamentByBook(bookString)
+        else
+            null
+    }
 
 
-
-    fun getBibleExcerpt (context: Context, address: BibleExcerptAddress) : List<String>?{
-        val list = ArrayList<String>()
+    fun getBibleExcerpt (context: Context, address: BibleExcerptAddress) : String?{
+        var result = ""
 
         var fb = false
         var fc = false
@@ -120,12 +139,10 @@ object BibleParser {
                                 tmp = "${parser.getAttributeValue(0)} "
                                 parser.next()
                                 tmp += parser.text
-
-
-                                list.add(tmp)
+                                result += tmp + "\n"
                             } else {
-                                Log.d("test", list.toString())
-                                return list
+                                Log.d("test", result)
+                                return result
                             }
                         }
                     }
